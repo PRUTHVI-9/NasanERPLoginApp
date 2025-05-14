@@ -1,5 +1,6 @@
 package com.example.myapplication.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -11,11 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityLoginBinding
 import com.example.myapplication.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class LoginActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityLoginBinding
-    lateinit var viewModel: MainViewModel
+    lateinit var viewModel: LoginViewModel
 
     var empId = "0"
 
@@ -32,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
         binding.btnLogin.setOnClickListener {
             val userId = binding.etEmail.text.toString()
@@ -44,8 +48,16 @@ class LoginActivity : AppCompatActivity() {
         }
 
         viewModel.result.observe(this) {
+
             Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-            empId = it.empId
+
+            if (it.status) {
+                empId = it.empId
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                intent.putExtra("emp_id", empId)
+                startActivity(intent)
+            }
+
         }
     }
 }

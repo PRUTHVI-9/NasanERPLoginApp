@@ -4,22 +4,22 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginResponse
 import com.example.myapplication.data.repository.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
-class MainViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
+class LoginViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
-    val result = MutableLiveData<EmployeeResponse>()
+    val result = MutableLiveData<LoginResponse>()
 
-    fun fetchEmpDetails(userId: String) {
+    fun login(userId: String, password: String) {
         viewModelScope.launch {
             try {
-                val response = repository.fetchEmpDetails(userId)
+                val response = repository.login(userId, password)
                 if (response.isSuccessful) {
                     result.value = response.body()
                 }

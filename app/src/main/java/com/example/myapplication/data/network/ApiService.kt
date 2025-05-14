@@ -1,5 +1,6 @@
 package com.example.myapplication.data.network
 
+import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginResponse
 import retrofit2.Response
 import retrofit2.http.Field
@@ -21,5 +22,5 @@ interface ApiService {
     @GET("/api/emp_details.php")
     suspend fun fetchEmpDetails(
         @Query("emp_id") empId: String
-    ): Response<LoginResponse>
+    ): Response<EmployeeResponse>
 }
