@@ -3,31 +3,33 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/txtEmployeeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pruthviraj Yadav"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="Pruthviraj Yadav" />
 
         <TextView
+            android:id="@+id/txtDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
-            android:text="09/05/2025"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="09/05/2025" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btntodaywork"
+            android:id="@+id/btnTodayWork"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -38,7 +40,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_pending_work"
+            android:id="@+id/btnPendingWork"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -49,7 +51,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnreconcilaition"
+            android:id="@+id/btnRecon"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -60,7 +62,7 @@
             android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnmeetings"
+            android:id="@+id/btnMeetings"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="150dp"
@@ -69,8 +71,9 @@
             android:text="Meetings"
             android:textColor="@android:color/black"
             android:textStyle="bold" />
+
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btntask"
+            android:id="@+id/btnTasks"
             style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="150dp"

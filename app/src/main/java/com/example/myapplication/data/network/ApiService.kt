@@ -2,6 +2,7 @@ package com.example.myapplication.data.network
 
 import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginResponse
+import com.example.myapplication.data.model.RoutineWorkResponse
 import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -23,4 +24,9 @@ interface ApiService {
     suspend fun fetchEmpDetails(
         @Query("emp_id") empId: String
     ): Response<EmployeeResponse>
+
+    @GET("/api/fetch_routine_works.php")
+    suspend fun fetchRoutineWork(
+        @Query("emp_id") empId: String
+    ): Response<RoutineWorkResponse>
 }
