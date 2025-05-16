@@ -25,16 +25,22 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
-//        setContentView(R.layout.login_layout)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+        val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
+
+        if (isLoggedIn) {
+            // Already logged in, skip login screen
+            val empId = sharedPref.getString("empId", "0") ?: "0"
+            val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.putExtra("emp_id", empId)
+            startActivity(intent)
+            finish()
+            return
+        }
 
         viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
 
@@ -53,10 +59,22 @@ class LoginActivity : AppCompatActivity() {
 
             if (it.status) {
                 empId = it.empId
+
+                // Save login state
+                val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                with(sharedPref.edit()) {
+                    putBoolean("isLoggedIn", true)
+                    putString("empId", empId)
+                    apply()
+                }
+
+                // Go to MainActivity
                 val intent = Intent(applicationContext, MainActivity::class.java)
                 intent.putExtra("emp_id", empId)
                 startActivity(intent)
+                finish() // Finish login activity so it can't be returned to
             }
+
 
         }
     }
