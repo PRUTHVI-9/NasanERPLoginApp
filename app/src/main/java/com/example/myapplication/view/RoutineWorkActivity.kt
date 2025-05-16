@@ -1,4 +1,4 @@
-package com.example.myapplication.ui
+package com.example.myapplication.view
 
 import android.os.Bundle
 import android.view.View
@@ -9,7 +9,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
+import com.example.myapplication.adapter.RoutineWorkAdapter
 import com.example.myapplication.databinding.ActivityRoutineWorkBinding
+import com.example.myapplication.viewModels.RoutineWorkViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

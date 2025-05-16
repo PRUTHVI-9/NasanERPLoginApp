@@ -1,20 +1,14 @@
-package com.example.myapplication.ui
+package com.example.myapplication.view
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.myapplication.R
-import com.example.myapplication.databinding.ActivityLoginBinding
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.viewModels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
