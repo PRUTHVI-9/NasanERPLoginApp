@@ -22,4 +22,9 @@ class MainRepository @Inject constructor(val api: ApiService) {
         delay(2000)
         return api.fetchRoutineWork(userId)
     }
+
+    suspend fun fetchRecon(userId: String): Response<RoutineWorkResponse> {
+        delay(2000)
+        return api.fetchRecon(userId)
+    }
 }

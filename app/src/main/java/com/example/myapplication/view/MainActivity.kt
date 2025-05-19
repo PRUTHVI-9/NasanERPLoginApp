@@ -55,6 +55,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnRecon.setOnClickListener {
+            val intent = Intent(applicationContext, ReconActivity::class.java)
+            intent.putExtra("emp_id", userId)
+            startActivity(intent)
+        }
+
         binding.logout.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Logout")
