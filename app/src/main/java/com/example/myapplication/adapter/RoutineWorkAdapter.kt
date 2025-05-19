@@ -37,11 +37,11 @@ class RoutineWorkAdapter constructor(
     ) {
 
         val item = list[position]
-        holder.routineName.text = "Routine Name: " + item.routineName
-        holder.type.text = "Schedule Type: " + item.scheduleType
-        holder.date.text = "Scheduled Date: " + item.scheduleDate
-        holder.tDate.text = "Tolerance Date: " + item.toleranceDate
-        holder.timeRequired.text = "Time Req: " + item.timeRequired
+        holder.routineName.text = item.routineName
+        holder.type.text =  item.scheduleType
+        holder.date.text =  item.scheduleDate
+        holder.tDate.text =item.toleranceDate
+        holder.timeRequired.text =item.timeRequired
     }
 
     override fun getItemCount(): Int {

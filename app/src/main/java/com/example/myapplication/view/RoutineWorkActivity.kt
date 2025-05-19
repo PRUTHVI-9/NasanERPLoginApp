@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.adapter.RoutineWorkAdapter
+import com.example.myapplication.data.model.RoutineWorkItem
 import com.example.myapplication.databinding.ActivityRoutineWorkBinding
 import com.example.myapplication.viewModels.RoutineWorkViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,6 @@ class RoutineWorkActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
         binding = ActivityRoutineWorkBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -58,8 +58,40 @@ class RoutineWorkActivity : AppCompatActivity() {
                 binding.recyclerView.adapter = adapter
                 binding.recyclerView.layoutManager = LinearLayoutManager(this)
             } else {
-                binding.recyclerView.visibility = View.GONE
+                val list = ArrayList<RoutineWorkItem>()
+                list.add(
+                    RoutineWorkItem(
+                        "Prepare daily consumption report",
+                    "Daily",
+                    "15-05-2025",
+                    "15-05-2025",
+                        "45 hours"
+                ))
+                list.add(
+                    RoutineWorkItem(
+                        "Approve GRN",
+                        "Daily",
+                        "15-05-2025",
+                        "16-05-2025",
+                        "35 hours"
+                    ))
+                list.add(
+                    RoutineWorkItem(
+                        "Daily Stock Report",
+                        "Daily",
+                        "15-05-2025",
+                        "16-05-2025",
+                        "40 hours"
+                    ))
+                val adapter = RoutineWorkAdapter(list)
+                binding.recyclerView.adapter = adapter
+                binding.recyclerView.layoutManager = LinearLayoutManager(this)
+
+                /*binding.recyclerView.visibility = View.GONE
                 binding.txtNoRecordFound.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE*/
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.txtNoRecordFound.visibility = View.GONE
                 binding.progressBar.visibility = View.GONE
             }
         }
