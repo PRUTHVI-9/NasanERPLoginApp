@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
         val userId = intent?.getStringExtra("emp_id") ?: "0"
 
-        if (userId != "0") {4
+        if (userId != "0") {
             viewModel.fetchEmpDetails(userId)
         }
 
