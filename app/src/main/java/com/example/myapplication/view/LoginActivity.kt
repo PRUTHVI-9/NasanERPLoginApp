@@ -3,10 +3,12 @@ package com.example.myapplication.view
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.databinding.ActivityLoginBinding
+import com.example.myapplication.utils.UiState
 import com.example.myapplication.viewModels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,28 +51,46 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.result.observe(this) {
-            Log.d("LoginActivity", "Observer triggered with result: ${it.status}, empId: ${it.empId}")
-
-            Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-
-            if (it.status) {
-                empId = it.empId
-
-                val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                with(sharedPref.edit()) {
-                    putBoolean("isLoggedIn", true)
-                    putString("empId", empId)
-                    apply()
+        viewModel.result.observe(this) { it ->
+            when (it) {
+                is UiState.Loading -> {
+                    binding.btnLogin.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
                 }
 
-                val intent = Intent(applicationContext, MainActivity::class.java)
-                intent.putExtra("emp_id", empId)
-                startActivity(intent)
-                finish()
+                is UiState.Success -> {
+                    if (it.data?.status == true) {
+                        binding.btnLogin.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
+                        Toast.makeText(applicationContext, it.data.message, Toast.LENGTH_SHORT)
+                            .show()
+
+                        empId = it.data.empId ?: "0"
+
+                        val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putBoolean("isLoggedIn", true)
+                            putString("empId", empId)
+                            apply()
+                        }
+
+                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        intent.putExtra("emp_id", empId)
+                        startActivity(intent)
+                        finish()
+
+                    } else {
+                        binding.btnLogin.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.GONE
+                    }
+                }
+
+                is UiState.Error -> {
+                    binding.btnLogin.visibility = View.VISIBLE
+                    binding.progressBar.visibility = View.GONE
+                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+                }
             }
-
-
         }
     }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.model.LoginResponse
 import com.example.myapplication.data.repository.MainRepository
+import com.example.myapplication.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -14,17 +15,24 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repository: MainRepository) : ViewModel() {
 
-    val result = MutableLiveData<LoginResponse>()
+
+    val result = MutableLiveData<UiState<LoginResponse>>()
 
     fun login(userId: String, password: String) {
         viewModelScope.launch {
             try {
+
+
+                result.value = UiState.Loading
                 val response = repository.login(userId, password)
+
                 if (response.isSuccessful) {
-                    result.value = response.body()
+                    result.value = UiState.Success(response.body())
+                } else {
+                    result.value = UiState.Error(response.message())
                 }
             } catch (e: Exception) {
-                Log.d("NASANAPP", e.toString())
+                result.value = UiState.Error("Something went wrong!")
             }
         }
     }

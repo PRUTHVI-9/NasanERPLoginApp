@@ -3,11 +3,13 @@ package com.example.myapplication.view
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.utils.UiState
 import com.example.myapplication.viewModels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
@@ -36,18 +38,25 @@ class MainActivity : AppCompatActivity() {
 
 
         viewModel.result.observe(this) {
-            if (it.status) {
-                val data = it.data[0]
-                binding.txtEmployeeName.text = data.firstName + " " + data.lastName
+            when(it) {
+                is UiState.Loading -> {
 
-                val currentDate = LocalDate.now()
-                val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                val formattedDate = currentDate.format(formatter)
+                }
+                is UiState.Success -> {
+                    val currentDate = LocalDate.now()
+                    val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    val formattedDate = currentDate.format(formatter)
 
-                binding.txtDate.text = formattedDate
-
+                    binding.txtDate.text = formattedDate
+                    val name = it.data?.data[0]?.firstName + " " + it.data?.data[0]?.lastName
+                    binding.txtEmployeeName.text = name
+                }
+                is UiState.Error -> {
+                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+                }
             }
         }
+
 
         binding.btnTodayWork.setOnClickListener {
             val intent = Intent(applicationContext, RoutineWorkActivity::class.java)
