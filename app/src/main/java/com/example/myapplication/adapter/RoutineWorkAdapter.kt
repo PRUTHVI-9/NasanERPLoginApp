@@ -1,17 +1,27 @@
 package com.example.myapplication.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.data.model.RoutineWorkItem
+import com.example.myapplication.view.WorkDetailsActivity
 
 
 class RoutineWorkAdapter constructor(
     val list: List<RoutineWorkItem>
+
 ) : RecyclerView.Adapter<RoutineWorkAdapter.ViewHolder>() {
+    var context: Context? = null
+
+    fun RoutineWorkAdapter(context: Context?) {
+        this.context = context
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -20,6 +30,7 @@ class RoutineWorkAdapter constructor(
         val date = itemView.findViewById<TextView>(R.id.txtScheduleDate)
         val tDate = itemView.findViewById<TextView>(R.id.txtToleranceDate)
         val timeRequired = itemView.findViewById<TextView>(R.id.txtTimeRequired)
+        val mainlayout = itemView.findViewById<CardView>(R.id.mainlayout)
     }
 
     override fun onCreateViewHolder(
@@ -42,6 +53,11 @@ class RoutineWorkAdapter constructor(
         holder.date.text =  item.scheduleDate
         holder.tDate.text =item.toleranceDate
         holder.timeRequired.text =item.timeRequired
+        holder.mainlayout.setOnClickListener {
+            val intent: Intent = Intent(context, WorkDetailsActivity::class.java)
+            context!!.startActivity(intent)
+        }
+
     }
 
     override fun getItemCount(): Int {
