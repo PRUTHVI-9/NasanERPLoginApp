@@ -3,6 +3,7 @@ package com.example.myapplication.data.network
 import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginRequest
 import com.example.myapplication.data.model.LoginResponse
+import com.example.myapplication.data.model.MeetingResponse
 import com.example.myapplication.data.model.RoutineWorkResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -38,8 +39,18 @@ interface ApiService {
         @Query("emp_id") empId: String
     ): Response<RoutineWorkResponse>
 
+    @GET("/api/fetch_pending_routines.php")
+    suspend fun fetchPendingRoutines(
+        @Query("emp_id") empId: String
+    ): Response<RoutineWorkResponse>
+
     @GET("/api/fetch_recon.php")
     suspend fun fetchRecon(
         @Query("emp_id") empId: String
     ): Response<RoutineWorkResponse>
+
+    @GET("/api/fetch_meetings.php")
+    suspend fun fetchMeetings(
+        @Query("emp_id") empId: String
+    ): Response<MeetingResponse>
 }

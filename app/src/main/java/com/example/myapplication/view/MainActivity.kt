@@ -64,8 +64,20 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnPendingWork.setOnClickListener {
+            val intent = Intent(applicationContext, PendingRoutineActivity::class.java)
+            intent.putExtra("emp_id", userId)
+            startActivity(intent)
+        }
+
         binding.btnRecon.setOnClickListener {
             val intent = Intent(applicationContext, ReconActivity::class.java)
+            intent.putExtra("emp_id", userId)
+            startActivity(intent)
+        }
+
+        binding.btnMeetings.setOnClickListener {
+            val intent = Intent(applicationContext, MeetingActivity::class.java)
             intent.putExtra("emp_id", userId)
             startActivity(intent)
         }

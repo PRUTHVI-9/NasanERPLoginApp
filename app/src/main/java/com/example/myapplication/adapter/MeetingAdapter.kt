@@ -9,15 +9,22 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
+import com.example.myapplication.data.model.MeetingItem
+import com.example.myapplication.data.model.MeetingResponse
 import com.example.myapplication.data.model.RoutineWorkItem
 import com.example.myapplication.view.WorkDetailsActivity
 
 
-class RoutineWorkAdapter(
-    val list: List<RoutineWorkItem>
 
-) : RecyclerView.Adapter<RoutineWorkAdapter.ViewHolder>() {
+class MeetingAdapter constructor(
+    val list: List<MeetingItem>
+
+) : RecyclerView.Adapter<MeetingAdapter.ViewHolder>() {
     var context: Context? = null
+
+    fun MeetingAdapter(context: Context?) {
+        this.context = context
+    }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -26,6 +33,8 @@ class RoutineWorkAdapter(
         val date = itemView.findViewById<TextView>(R.id.txtScheduleDate)
         val tDate = itemView.findViewById<TextView>(R.id.txtToleranceDate)
         val timeRequired = itemView.findViewById<TextView>(R.id.txtTimeRequired)
+//        val timeRequired = itemView.findViewById<TextView>(R.id.txtTimeRequired)
+//        val timeRequired = itemView.findViewById<TextView>(R.id.txtTimeRequired)
         val mainlayout = itemView.findViewById<CardView>(R.id.mainlayout)
     }
 
@@ -34,7 +43,7 @@ class RoutineWorkAdapter(
         viewType: Int
     ): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_routine_work, parent, false)
+            .inflate(R.layout.item_meeting, parent, false)
         return ViewHolder(view)
     }
 
@@ -44,14 +53,14 @@ class RoutineWorkAdapter(
     ) {
 
         val item = list[position]
-        holder.routineName.text = item.routineName
+        holder.routineName.text = item.meetingName
         holder.type.text =  item.scheduleType
         holder.date.text =  item.scheduleDate
         holder.tDate.text =item.toleranceDate
         holder.timeRequired.text =item.timeRequired
         holder.mainlayout.setOnClickListener {
-            val intent = Intent(holder.itemView.context, WorkDetailsActivity::class.java)
-            holder.itemView.context.startActivity(intent)
+            val intent: Intent = Intent(context, WorkDetailsActivity::class.java)
+            context!!.startActivity(intent)
         }
 
     }
