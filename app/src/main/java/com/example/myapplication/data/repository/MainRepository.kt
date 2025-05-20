@@ -3,6 +3,7 @@ package com.example.myapplication.data.repository
 import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginRequest
 import com.example.myapplication.data.model.LoginResponse
+import com.example.myapplication.data.model.MeetingResponse
 import com.example.myapplication.data.model.RoutineWorkResponse
 import com.example.myapplication.data.network.ApiService
 import kotlinx.coroutines.delay
@@ -25,8 +26,18 @@ class MainRepository @Inject constructor(val api: ApiService) {
         return api.fetchRoutineWork(userId)
     }
 
+    suspend fun fetchPendingRoutines(userId: String): Response<RoutineWorkResponse> {
+        delay(2000)
+        return api.fetchPendingRoutines(userId)
+    }
+
     suspend fun fetchRecon(userId: String): Response<RoutineWorkResponse> {
         delay(2000)
         return api.fetchRecon(userId)
+    }
+
+    suspend fun fetchMeetings(userId: String): Response<MeetingResponse> {
+        delay(2000)
+        return api.fetchMeetings(userId)
     }
 }
