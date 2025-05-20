@@ -29,4 +29,9 @@ interface ApiService {
     suspend fun fetchRoutineWork(
         @Query("emp_id") empId: String
     ): Response<RoutineWorkResponse>
+
+    @GET("/api/fetch_recon.php")
+    suspend fun fetchRecon(
+        @Query("emp_id") empId: String
+    ): Response<RoutineWorkResponse>
 }

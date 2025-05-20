@@ -2,6 +2,7 @@ package com.example.myapplication.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -44,10 +45,12 @@ class LoginActivity : AppCompatActivity() {
 
             if (userId.isNotEmpty() && password.isNotEmpty()) {
                 viewModel.login(userId, password)
+
             }
         }
 
         viewModel.result.observe(this) {
+            Log.d("LoginActivity", "Observer triggered with result: ${it.status}, empId: ${it.empId}")
 
             Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
 

@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         val userId = intent?.getStringExtra("emp_id") ?: "0"
 
-        if (userId != "0") {4
+        if (userId != "0") {
             viewModel.fetchEmpDetails(userId)
         }
 
@@ -51,6 +51,12 @@ class MainActivity : AppCompatActivity() {
 
         binding.btnTodayWork.setOnClickListener {
             val intent = Intent(applicationContext, RoutineWorkActivity::class.java)
+            intent.putExtra("emp_id", userId)
+            startActivity(intent)
+        }
+
+        binding.btnRecon.setOnClickListener {
+            val intent = Intent(applicationContext, ReconActivity::class.java)
             intent.putExtra("emp_id", userId)
             startActivity(intent)
         }
