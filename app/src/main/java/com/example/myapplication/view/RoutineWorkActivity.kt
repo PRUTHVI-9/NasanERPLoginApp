@@ -61,7 +61,7 @@ class RoutineWorkActivity : AppCompatActivity() {
                     if (data?.status == true) {
 
                         val data = it.data.data
-                        val adapter = RoutineWorkAdapter(data)
+                        val adapter = RoutineWorkAdapter(this,data)
                         binding.recyclerView.adapter = adapter
                         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -94,7 +94,7 @@ class RoutineWorkActivity : AppCompatActivity() {
                                 "20-05-2025",
                                 "40 min"
                             ))
-                        val adapter = RoutineWorkAdapter(list)
+                        val adapter = RoutineWorkAdapter(this,list)
                         binding.recyclerView.adapter = adapter
                         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 

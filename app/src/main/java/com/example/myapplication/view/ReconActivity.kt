@@ -60,7 +60,7 @@ class ReconActivity : AppCompatActivity() {
                 is UiState.Success -> {
                     if (it.data?.status == true) {
                         val data = it.data?.data ?: emptyList()
-                        val adapter = RoutineWorkAdapter(data)
+                        val adapter = RoutineWorkAdapter(this,data)
                         binding.recyclerView.adapter = adapter
                         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -93,7 +93,7 @@ class ReconActivity : AppCompatActivity() {
                                 "20-05-2025",
                                 "40 min"
                             ))
-                        val adapter = RoutineWorkAdapter(list)
+                        val adapter = RoutineWorkAdapter(this,list)
                         binding.recyclerView.adapter = adapter
                         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
