@@ -69,37 +69,8 @@ class PendingRoutineActivity : AppCompatActivity() {
                         binding.txtNoRecordFound.visibility = View.GONE
                         binding.progressBar.visibility = View.GONE
                     } else {
-                        val list = ArrayList<RoutineWorkItem>()
-                        list.add(
-                            RoutineWorkItem(
-                                "Prepare daily consumption report",
-                                "Daily",
-                                "19-05-2025",
-                                "19-05-2025",
-                                "45 min"
-                            ))
-                        list.add(
-                            RoutineWorkItem(
-                                "Approve GRN",
-                                "Daily",
-                                "19-05-2025",
-                                "20-05-2025",
-                                "35 min"
-                            ))
-                        list.add(
-                            RoutineWorkItem(
-                                "Daily Stock Report",
-                                "Daily",
-                                "19-05-2025",
-                                "20-05-2025",
-                                "40 min"
-                            ))
-                        val adapter = RoutineWorkAdapter(list)
-                        binding.recyclerView.adapter = adapter
-                        binding.recyclerView.layoutManager = LinearLayoutManager(this)
-
-                        binding.recyclerView.visibility = View.VISIBLE
-                        binding.txtNoRecordFound.visibility = View.GONE
+                        binding.recyclerView.visibility = View.GONE
+                        binding.txtNoRecordFound.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.GONE
                     }
                 }

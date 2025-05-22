@@ -17,39 +17,39 @@ import retrofit2.http.Query
 interface ApiService {
 
     @FormUrlEncoded
-    @POST("/api/login.php")
+    @POST("/erp_api/login.php")
     suspend fun login1(
         @Field("user_id") userId: String,
         @Field("password") password: String
     ): Response<LoginResponse>
 
     @Headers("Content-Type: application/json")
-    @POST("/api/login.php")
+    @POST("/erp_api/login.php")
     suspend fun login(
         @Body loginRequest: LoginRequest
     ): Response<LoginResponse>
 
-    @GET("/api/emp_details.php")
+    @GET("/erp_api/emp_details.php")
     suspend fun fetchEmpDetails(
         @Query("emp_id") empId: String
     ): Response<EmployeeResponse>
 
-    @GET("/api/fetch_routine_works.php")
+    @GET("/erp_api/fetch_routine_works.php")
     suspend fun fetchRoutineWork(
         @Query("emp_id") empId: String
     ): Response<RoutineWorkResponse>
 
-    @GET("/api/fetch_pending_routines.php")
+    @GET("/erp_api/fetch_pending_routines.php")
     suspend fun fetchPendingRoutines(
         @Query("emp_id") empId: String
     ): Response<RoutineWorkResponse>
 
-    @GET("/api/fetch_recon.php")
+    @GET("/erp_api/fetch_recon.php")
     suspend fun fetchRecon(
         @Query("emp_id") empId: String
     ): Response<RoutineWorkResponse>
 
-    @GET("/api/fetch_meetings.php")
+    @GET("/erp_api/fetch_meetings.php")
     suspend fun fetchMeetings(
         @Query("emp_id") empId: String
     ): Response<MeetingResponse>
