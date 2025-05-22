@@ -18,7 +18,6 @@ class WorkDetailsActivity : AppCompatActivity() {
 
         binding = ActivityWorkDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.title.text = intent.getStringExtra("routine_name")
 
     }
