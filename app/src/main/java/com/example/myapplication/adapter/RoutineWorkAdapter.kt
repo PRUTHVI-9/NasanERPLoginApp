@@ -51,7 +51,10 @@ class RoutineWorkAdapter(
         holder.timeRequired.text =item.timeRequired
         holder.mainlayout.setOnClickListener {
             val intent = Intent(holder.itemView.context, WorkDetailsActivity::class.java)
+            intent.putExtra("routine_id", item.routineId)
+            intent.putExtra("routine_date", item.routineDate)
             intent.putExtra("routine_name", item.routineName)
+            intent.putExtra("time_req", item.timeRequired)
             holder.itemView.context.startActivity(intent)
         }
 

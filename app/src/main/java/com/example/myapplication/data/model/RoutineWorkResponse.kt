@@ -12,6 +12,10 @@ data class RoutineWorkResponse (
 )
 
 data class RoutineWorkItem (
+    @SerializedName("routine_id")
+    val routineId: String,
+    @SerializedName("routine_date")
+    val routineDate: String,
     @SerializedName("routine_name")
     val routineName: String,
     @SerializedName("schedule_type")

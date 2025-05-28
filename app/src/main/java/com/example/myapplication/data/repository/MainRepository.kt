@@ -1,9 +1,15 @@
 package com.example.myapplication.data.repository
 
+import com.example.myapplication.data.model.ActionRequest
+import com.example.myapplication.data.model.CommonResponse
 import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginRequest
 import com.example.myapplication.data.model.LoginResponse
 import com.example.myapplication.data.model.MeetingResponse
+import com.example.myapplication.data.model.RoutineProcessRequest
+import com.example.myapplication.data.model.RoutineProcessResponse
+import com.example.myapplication.data.model.RoutineStatusRequest
+import com.example.myapplication.data.model.RoutineStatusResponse
 import com.example.myapplication.data.model.RoutineWorkResponse
 import com.example.myapplication.data.network.ApiService
 import kotlinx.coroutines.delay
@@ -38,5 +44,30 @@ class MainRepository @Inject constructor(val api: ApiService) {
     suspend fun fetchMeetings(userId: String): Response<MeetingResponse> {
         delay(2000)
         return api.fetchMeetings(userId)
+    }
+
+    suspend fun doActionOnRoutine(routineId: String, date: String, status: String, timeReq: String): Response<CommonResponse> {
+        delay(2000)
+        return api.doActionOnRoutine(ActionRequest(
+            routineId,
+            date,
+            status,
+            timeReq
+        ))
+    }
+
+    suspend fun fetchRoutineStatus(routineId: String, date: String): Response<RoutineStatusResponse> {
+        delay(2000)
+        return api.fetchRoutineStatus(RoutineStatusRequest(
+            date,
+            routineId
+        ))
+    }
+
+    suspend fun fetchRoutineProcessSteps(routineId: String): Response<RoutineProcessResponse> {
+        delay(2000)
+        return api.fetchRoutineProcessSteps(RoutineProcessRequest(
+            routineId
+        ))
     }
 }
