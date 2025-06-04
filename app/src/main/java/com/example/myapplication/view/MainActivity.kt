@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                     val formattedDate = currentDate.format(formatter)
 
                     binding.txtDate.text = formattedDate
-                    val name = it.data?.data[0]?.firstName + " " + it.data?.data[0]?.lastName
+                    val name = it.data?.data?.get(0)?.firstName + " " + it.data?.data?.get(0)?.lastName
                     binding.txtEmployeeName.text = name
                 }
                 is UiState.Error -> {

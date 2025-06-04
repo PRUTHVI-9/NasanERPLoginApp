@@ -6,6 +6,9 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -38,6 +41,13 @@ class WorkDetailsActivity : AppCompatActivity() {
         val timeReq = intent.getStringExtra("time_req") ?: "0"
 
 
+        val items = listOf("Enter Reason....","Reason 1", "Reason 2", "Reason 3")  //added
+
+        // Create adapter
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        binding.edtReson.adapter = adapter //rk
 
         viewModel = ViewModelProvider(this)[WorkDetailsViewModel::class.java]
 
@@ -60,6 +70,23 @@ class WorkDetailsActivity : AppCompatActivity() {
             val intent = Intent(applicationContext, RoutineProcessStepsActivity::class.java)
             intent.putExtra("routine_id", routineId)
             startActivity(intent)
+        }
+
+        //select item
+        binding.edtReson.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val selectedItem = parent.getItemAtPosition(position).toString()
+                //   Toast.makeText(this@WorkDetailsActivity, "Selected: $selectedItem", Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Optional: handle nothing selected
+            }
         }
 
         viewModel.result.observe(this) {
@@ -139,11 +166,6 @@ class WorkDetailsActivity : AppCompatActivity() {
                 }
             }
         }
-
-
     }
-
-
-
 
 }

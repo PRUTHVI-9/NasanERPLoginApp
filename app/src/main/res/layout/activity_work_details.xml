@@ -111,14 +111,24 @@
             android:text="Skip"
             android:id="@+id/btnSkip"/>
 
-        <EditText
+       <!-- <EditText
             android:layout_marginEnd="16dp"
             android:layout_marginStart="8dp"
             android:hint="Enter reason..."
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/edtReason"
-            android:background="@drawable/edit_text_box"/>
+            android:background="@drawable/edit_text_box"/>-->
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="8dp"
+            android:id="@+id/edtReson"
+            android:background="@drawable/edit_text_box"
+
+            ></Spinner>
 
     </LinearLayout>
 
