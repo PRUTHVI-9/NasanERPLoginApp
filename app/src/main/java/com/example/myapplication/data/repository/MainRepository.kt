@@ -6,6 +6,7 @@ import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginRequest
 import com.example.myapplication.data.model.LoginResponse
 import com.example.myapplication.data.model.MeetingResponse
+import com.example.myapplication.data.model.ReasonResponse
 import com.example.myapplication.data.model.RoutineProcessRequest
 import com.example.myapplication.data.model.RoutineProcessResponse
 import com.example.myapplication.data.model.RoutineStatusRequest
@@ -69,5 +70,9 @@ class MainRepository @Inject constructor(val api: ApiService) {
         return api.fetchRoutineProcessSteps(RoutineProcessRequest(
             routineId
         ))
+    }
+
+    suspend fun fetchReasons(): Response<ReasonResponse> {
+        return api.fetchReasons()
     }
 }

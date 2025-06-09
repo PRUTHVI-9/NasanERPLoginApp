@@ -6,6 +6,7 @@ import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginRequest
 import com.example.myapplication.data.model.LoginResponse
 import com.example.myapplication.data.model.MeetingResponse
+import com.example.myapplication.data.model.ReasonResponse
 import com.example.myapplication.data.model.RoutineProcessRequest
 import com.example.myapplication.data.model.RoutineProcessResponse
 import com.example.myapplication.data.model.RoutineStatusRequest
@@ -77,6 +78,9 @@ interface ApiService {
     suspend fun fetchRoutineProcessSteps(
         @Body request: RoutineProcessRequest
     ): Response<RoutineProcessResponse>
+
+    @GET("/api/fetch_reasons.php")
+    fun fetchReasons(): Response<ReasonResponse>
 
 
 }

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.model.CommonResponse
+import com.example.myapplication.data.model.ReasonResponse
 import com.example.myapplication.data.model.RoutineStatusResponse
 import com.example.myapplication.data.model.RoutineWorkResponse
 import com.example.myapplication.data.repository.MainRepository
@@ -20,6 +21,7 @@ class WorkDetailsViewModel @Inject constructor(
 
     val result = MutableLiveData<UiState<CommonResponse>>()
     val resultStatus = MutableLiveData<UiState<RoutineStatusResponse>>()
+    val resultReasons = MutableLiveData<UiState<ReasonResponse>>()
 
     fun doActionOnRoutine(routineId: String, date: String, status: String, timeReq: String) {
         viewModelScope.launch {
@@ -52,4 +54,22 @@ class WorkDetailsViewModel @Inject constructor(
             }
         }
     }
+
+    fun fetchReasons() {
+        viewModelScope.launch {
+            try {
+                resultReasons.value = UiState.Loading
+                val response = repository.fetchReasons()
+                if (response.isSuccessful) {
+                    resultReasons.value = UiState.Success(response.body())
+                } else {
+                    resultReasons.value = UiState.Error(response.message())
+                }
+            } catch (e: Exception) {
+                resultReasons.value = UiState.Error(e.message ?: "Something went wrong!")
+            }
+        }
+    }
+
+
 }
