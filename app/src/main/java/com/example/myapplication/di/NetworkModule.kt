@@ -73,7 +73,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
-            .baseUrl("http://192.168.100.164/")
+            .baseUrl("http://192.168.100.138/")
 //            .baseUrl("https://123.201.117.218:10/")
             .build()
     }
