@@ -1,10 +1,12 @@
 package com.example.myapplication.view
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.provider.CalendarContract.Colors
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.AdapterView
@@ -19,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityLoginBinding
 import com.example.myapplication.databinding.ActivityWorkDetailsBinding
+import com.example.myapplication.databinding.WorkDetailsBinding
 import com.example.myapplication.utils.UiState
 import com.example.myapplication.viewModels.WorkDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,13 +29,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WorkDetailsActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityWorkDetailsBinding
+//    lateinit var binding: ActivityWorkDetailsBinding
+    lateinit var binding: WorkDetailsBinding
     lateinit var viewModel: WorkDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityWorkDetailsBinding.inflate(layoutInflater)
+        binding = WorkDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val routineId = intent.getStringExtra("routine_id") ?: "0"
@@ -41,7 +45,10 @@ class WorkDetailsActivity : AppCompatActivity() {
         val timeReq = intent.getStringExtra("time_req") ?: "0"
 
 
-        val items = listOf("Enter Reason....","Reason 1", "Reason 2", "Reason 3")  //added
+        val items = listOf("Enter Reason....",
+            "Due to a pending important task, I am skipping the current one.",
+            "Due to some reasons my skip the current task",
+            "Tasks are assigned by priority, but I skip a few.")  //added
 
         // Create adapter
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
@@ -72,7 +79,6 @@ class WorkDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //select item
         binding.edtReson.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -82,11 +88,27 @@ class WorkDetailsActivity : AppCompatActivity() {
             ) {
                 val selectedItem = parent.getItemAtPosition(position).toString()
                 //   Toast.makeText(this@WorkDetailsActivity, "Selected: $selectedItem", Toast.LENGTH_SHORT).show()
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Optional: handle nothing selected
+           if (position != 0){
+               binding.subbutton.isEnabled = true
+               binding.subbutton.setBackgroundColor(Color.BLUE)
+
+           }
+                else{
+                    binding.subbutton.isEnabled = false
+                   binding.subbutton.setBackgroundColor(Color.GRAY)
+           }
             }
+            @SuppressLint("SuspiciousIndentation")
+            override fun onNothingSelected(parent: AdapterView<*>) {
+            binding.subbutton.isEnabled = false
+                binding.subbutton.setBackgroundColor(Color.GRAY)
+            }
+        }
+
+        binding.subbutton.setOnClickListener(){
+            val intent = Intent(applicationContext , RoutineProcessStepsActivity::class.java)
+            startActivity(intent)
         }
 
         viewModel.result.observe(this) {
@@ -97,7 +119,6 @@ class WorkDetailsActivity : AppCompatActivity() {
                 is UiState.Success -> {
                     val date = it.data?.message
                     Toast.makeText(applicationContext, date, Toast.LENGTH_SHORT).show()
-
                     val action = it.data?.action
                     when(action) {
                         "started" -> {
@@ -115,6 +136,10 @@ class WorkDetailsActivity : AppCompatActivity() {
                             binding.btnPause.setBackgroundColor(Color.GRAY)
                             binding.btnStop.setBackgroundColor(Color.RED)
                         }
+
+                       /* "submit" ->{
+                            binding.subbutton.setBackgroundColor(Color.GRAY)  //added
+                        }*/
                     }
                     viewModel.fetchRoutineStatus(routineId, routineDate)
                 }
@@ -159,7 +184,6 @@ class WorkDetailsActivity : AppCompatActivity() {
                             }
                         }
                     }
-
                 }
                 is UiState.Error -> {
                     Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
@@ -167,5 +191,4 @@ class WorkDetailsActivity : AppCompatActivity() {
             }
         }
     }
-
 }
