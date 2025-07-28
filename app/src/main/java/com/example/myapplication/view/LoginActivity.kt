@@ -5,8 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityLoginBinding
 import com.example.myapplication.utils.UiState
 import com.example.myapplication.viewModels.LoginViewModel
@@ -27,7 +31,15 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
+        val sharedPref = applicationContext.getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
         val isLoggedIn = sharedPref.getBoolean("isLoggedIn", false)
 
         if (isLoggedIn) {
@@ -47,7 +59,9 @@ class LoginActivity : AppCompatActivity() {
 
             if (userId.isNotEmpty() && password.isNotEmpty()) {
                 viewModel.login(userId, password)
-
+            } else {
+                Toast.makeText(applicationContext, "Please fill all details!", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -80,6 +94,8 @@ class LoginActivity : AppCompatActivity() {
                         finish()
 
                     } else {
+                        Toast.makeText(applicationContext, it.data?.message, Toast.LENGTH_SHORT)
+                            .show()
                         binding.btnLogin.visibility = View.VISIBLE
                         binding.progressBar.visibility = View.GONE
                     }

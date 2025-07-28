@@ -8,3 +8,8 @@ data class RoutineStatusRequest (
     @SerializedName("routine_id")
     val id: String
 )
+
+data class TaskStatusRequest (
+    @SerializedName("task_id")
+    val id: String
+)

@@ -4,16 +4,25 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.utils.UiState
 import com.example.myapplication.viewModels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import androidx.core.content.edit
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import okhttp3.Dispatcher
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,6 +37,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        enableEdgeToEdge()
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val userId = intent?.getStringExtra("emp_id") ?: "0"
@@ -35,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         if (userId != "0") {
             viewModel.fetchEmpDetails(userId)
         }
-
 
         viewModel.result.observe(this) {
             when(it) {
@@ -82,13 +97,23 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.btnTasks.setOnClickListener {
+            val intent = Intent(applicationContext, TaskActivity::class.java)
+            intent.putExtra("emp_id", userId)
+            startActivity(intent)
+        }
+
+        binding.txtAddMeeting.setOnClickListener {
+            val intent = Intent(applicationContext, AddMeetingActivity::class.java)
+            startActivity(intent)
+        }
         binding.logout.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Logout")
                 .setMessage("Do you want to logout?")
                 .setPositiveButton("Yes") { dialog, _ ->
-                    val sharedPref = getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                    sharedPref.edit().clear().apply()
+                    val sharedPref = applicationContext.getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
+                    sharedPref.edit() { clear() }
 
                     val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

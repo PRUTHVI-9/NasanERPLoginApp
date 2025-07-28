@@ -12,6 +12,10 @@ import com.example.myapplication.data.model.RoutineProcessResponse
 import com.example.myapplication.data.model.RoutineStatusRequest
 import com.example.myapplication.data.model.RoutineStatusResponse
 import com.example.myapplication.data.model.RoutineWorkResponse
+import com.example.myapplication.data.model.SkipReasonRequest
+import com.example.myapplication.data.model.SkipReasonResponse
+import com.example.myapplication.data.model.TaskActionRequest
+import com.example.myapplication.data.model.TaskStatusRequest
 import com.example.myapplication.data.network.ApiService
 import kotlinx.coroutines.delay
 import retrofit2.Response
@@ -47,32 +51,63 @@ class MainRepository @Inject constructor(val api: ApiService) {
         return api.fetchMeetings(userId)
     }
 
-    suspend fun doActionOnRoutine(routineId: String, date: String, status: String, timeReq: String): Response<CommonResponse> {
+    suspend fun doActionOnRoutine(
+        routineId: String,
+        date: String,
+        status: String,
+        timeReq: String
+    ): Response<CommonResponse> {
         delay(2000)
-        return api.doActionOnRoutine(ActionRequest(
-            routineId,
-            date,
-            status,
-            timeReq
-        ))
+        return api.doActionOnRoutine(
+            ActionRequest(
+                routineId,
+                date,
+                status,
+                timeReq
+            )
+        )
     }
 
-    suspend fun fetchRoutineStatus(routineId: String, date: String): Response<RoutineStatusResponse> {
+    suspend fun fetchRoutineStatus(
+        routineId: String,
+        date: String
+    ): Response<RoutineStatusResponse> {
         delay(2000)
-        return api.fetchRoutineStatus(RoutineStatusRequest(
-            date,
-            routineId
-        ))
+        return api.fetchRoutineStatus(
+            RoutineStatusRequest(
+                date,
+                routineId
+            )
+        )
     }
 
     suspend fun fetchRoutineProcessSteps(routineId: String): Response<RoutineProcessResponse> {
         delay(2000)
-        return api.fetchRoutineProcessSteps(RoutineProcessRequest(
-            routineId
-        ))
+        return api.fetchRoutineProcessSteps(
+            RoutineProcessRequest(
+                routineId
+            )
+        )
     }
 
     suspend fun fetchReasons(): Response<ReasonResponse> {
         return api.fetchReasons()
     }
+
+    suspend fun skipReason(
+        routineId: String,
+        date: String,
+        reason: String
+    ): Response<SkipReasonResponse> {
+        return api.routineSkipReason(SkipReasonRequest(routineId, date, reason))
+    }
+
+    suspend fun fetchTasks(empId: String) = api.fetchTasks(empId)
+
+    suspend fun fetchTaskStatus(taskId: String) = api.fetchTaskStatus(TaskStatusRequest(taskId))
+
+    suspend fun doTaskOperation(taskId: String, status: String, timeReq: String) =
+        api.doTaskOperation(
+            TaskActionRequest(taskId, status, timeReq)
+        )
 }

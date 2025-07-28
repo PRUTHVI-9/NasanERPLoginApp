@@ -49,6 +49,14 @@ class RoutineWorkAdapter(
         holder.date.text =  item.scheduleDate
         holder.tDate.text =item.toleranceDate
         holder.timeRequired.text =item.timeRequired
+
+        val reason = item.reason
+        if (reason != null) {
+            holder.mainlayout.setBackgroundColor(holder.itemView.context.resources.getColor(R.color.light_blue))
+        } else {
+            holder.mainlayout.setBackgroundColor(holder.itemView.context.resources.getColor(R.color.white))
+
+        }
         holder.mainlayout.setOnClickListener {
             val intent = Intent(holder.itemView.context, WorkDetailsActivity::class.java)
             intent.putExtra("routine_id", item.routineId)

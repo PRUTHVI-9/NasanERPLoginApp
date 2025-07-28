@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.AddMeetingActivity">
+
+    <LinearLayout
+        android:id="@+id/rootLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <!-- 1. Search Meeting -->
+        <AutoCompleteTextView
+            android:id="@+id/meetingSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Search or select a meeting"
+            android:inputType="text"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 2. Meeting Frequency -->
+        <Spinner
+            android:id="@+id/meetingFrequency"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 3. Venue (Dropdown) -->
+        <Spinner
+            android:id="@+id/venueSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- 4. Tolerance (in minutes) -->
+        <EditText
+            android:id="@+id/tolerance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tolerance (in minutes)"
+            android:inputType="number"
+            android:layout_marginBottom="16dp" />
+
+        <!-- === Conditional Frequency Layouts === -->
+
+        <!-- One Time: Date Picker -->
+        <LinearLayout
+            android:id="@+id/oneTimeDateLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Date:"
+                android:layout_gravity="center_vertical" />
+
+            <Button
+                android:id="@+id/dateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Choose Date"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+        <!-- Weekly: Multiple Day Checkboxes -->
+        <LinearLayout
+            android:id="@+id/weeklyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Select Days:" />
+
+            <CheckBox android:id="@+id/dayMonday" android:text="Monday"  android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <CheckBox android:id="@+id/dayTuesday" android:text="Tuesday" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <CheckBox android:id="@+id/dayWednesday" android:text="Wednesday" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <CheckBox android:id="@+id/dayThursday" android:text="Thursday" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <CheckBox android:id="@+id/dayFriday" android:text="Friday" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <CheckBox android:id="@+id/daySaturday" android:text="Saturday" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+            <CheckBox android:id="@+id/daySunday" android:text="Sunday" android:layout_height="wrap_content" android:layout_width="wrap_content"/>
+        </LinearLayout>
+
+        <!-- Monthly: Multi-date Input -->
+        <LinearLayout
+            android:id="@+id/monthlyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginBottom="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Enter Dates (e.g. 1, 10, 15)" />
+
+<!--            <MultiAutoCompleteTextView-->
+<!--                android:id="@+id/monthlyDatesInput"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:hint="Dates (comma-separated)"-->
+<!--                android:inputType="number" />-->
+            <EditText
+                android:id="@+id/monthlyDatesInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter dates like 1,5,10"
+                android:inputType="text"
+                android:maxLines="3"
+                android:layout_marginTop="8dp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/selectEmployeesButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Employees"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/selectedEmployeesText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No employees selected"
+            android:textColor="#444444"
+            android:layout_marginBottom="16dp" />
+
+
+        <!-- Submit Button -->
+        <Button
+            android:id="@+id/submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Submit" />
+
+    </LinearLayout>
+</ScrollView>

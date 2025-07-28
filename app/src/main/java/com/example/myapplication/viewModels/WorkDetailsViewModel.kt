@@ -7,6 +7,7 @@ import com.example.myapplication.data.model.CommonResponse
 import com.example.myapplication.data.model.ReasonResponse
 import com.example.myapplication.data.model.RoutineStatusResponse
 import com.example.myapplication.data.model.RoutineWorkResponse
+import com.example.myapplication.data.model.SkipReasonResponse
 import com.example.myapplication.data.repository.MainRepository
 import com.example.myapplication.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +23,7 @@ class WorkDetailsViewModel @Inject constructor(
     val result = MutableLiveData<UiState<CommonResponse>>()
     val resultStatus = MutableLiveData<UiState<RoutineStatusResponse>>()
     val resultReasons = MutableLiveData<UiState<ReasonResponse>>()
+    val resultSkipReason = MutableLiveData<UiState<SkipReasonResponse>>()
 
     fun doActionOnRoutine(routineId: String, date: String, status: String, timeReq: String) {
         viewModelScope.launch {
@@ -71,5 +73,24 @@ class WorkDetailsViewModel @Inject constructor(
         }
     }
 
+    fun skipReason(routineId: String, date: String, reason: String) {
+        viewModelScope.launch {
+            try {
+                resultSkipReason.value = UiState.Loading
+                val response = repository.skipReason(
+                    routineId,
+                    date,
+                    reason
+                )
+                if (response.isSuccessful) {
+                    resultSkipReason.value = UiState.Success(response.body())
+                } else {
+                    resultSkipReason.value = UiState.Error(response.message())
+                }
+            } catch (e: Exception) {
+                resultSkipReason.value = UiState.Error(e.message ?: "Something went wrong!")
+            }
+        }
+    }
 
 }

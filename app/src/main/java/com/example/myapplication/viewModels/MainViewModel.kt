@@ -8,6 +8,8 @@ import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.repository.MainRepository
 import com.example.myapplication.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -45,4 +47,13 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
 //            }
 //        }
 //    }
+
+    private val _uiState = MutableStateFlow("Initial State")
+
+    // Exposed as immutable
+    val uiState: StateFlow<String> = _uiState
+
+    fun updateState(newState: String) {
+        _uiState.value = newState
+    }
 }

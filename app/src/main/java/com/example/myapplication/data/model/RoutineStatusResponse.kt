@@ -28,3 +28,29 @@ data class RoutineStatusItem (
     @SerializedName("status")
     val status: String
 )
+
+
+data class TaskStatusResponse (
+    @SerializedName("status")
+    val status: Boolean,
+    @SerializedName("message")
+    val message: String,
+    @SerializedName("data")
+    val data: List<TaskStatusItem>
+)
+data class TaskStatusItem (
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("task_id")
+    val routineId: String,
+    @SerializedName("start_time")
+    val startTime: String,
+    @SerializedName("end_time")
+    val endTime: String,
+    @SerializedName("total_duration")
+    val total: String,
+    @SerializedName("required_duration")
+    val required: String,
+    @SerializedName("status")
+    val status: String
+)

@@ -18,6 +18,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.transition.Visibility
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityLoginBinding
 import com.example.myapplication.databinding.ActivityWorkDetailsBinding
@@ -25,15 +27,28 @@ import com.example.myapplication.databinding.WorkDetailsBinding
 import com.example.myapplication.utils.UiState
 import com.example.myapplication.viewModels.WorkDetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable.isActive
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.Locale
+import java.util.TimeZone
 
 @AndroidEntryPoint
 class WorkDetailsActivity : AppCompatActivity() {
+
+    private var startTimeMillis: Long = 0L
+    private var timerJob: Job? = null
+    private val timeFormatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
 
     //    lateinit var binding: ActivityWorkDetailsBinding
     lateinit var binding: WorkDetailsBinding
     lateinit var viewModel: WorkDetailsViewModel
 
     var list = ArrayList<String>()
+    var selectedReason = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,16 +80,20 @@ class WorkDetailsActivity : AppCompatActivity() {
 
         viewModel.fetchReasons()
 
+
+
         binding.btnStart.setOnClickListener {
             viewModel.doActionOnRoutine(routineId, routineDate, "started", timeReq)
         }
 
         binding.btnPause.setOnClickListener {
             viewModel.doActionOnRoutine(routineId, routineDate, "paused", timeReq)
+            stopTimer()
         }
 
         binding.btnStop.setOnClickListener {
             viewModel.doActionOnRoutine(routineId, routineDate, "stopped", timeReq)
+            stopTimer()
         }
 
         binding.viewSystem.setOnClickListener {
@@ -83,42 +102,64 @@ class WorkDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.edtReson.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        binding.edtReason.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View?,
                 position: Int,
                 id: Long
             ) {
-                val selectedItem = parent.getItemAtPosition(position).toString()
-                val id = list.indexOf(selectedItem)
+                selectedReason = parent.getItemAtPosition(position).toString()
 
-                Toast.makeText(
-                    this@WorkDetailsActivity,
-                    "Selected: $selectedItem",
-                    Toast.LENGTH_SHORT
-                ).show()
+
+//                val index = list.indexOf(selectedItem)
+
+
+//                Toast.makeText(
+//                    this@WorkDetailsActivity,
+//                    "Selected: $selectedItem",
+//                    Toast.LENGTH_SHORT
+//                ).show()
 
                 if (position != 0) {
-                    binding.subbutton.isEnabled = true
-                    binding.subbutton.setBackgroundColor(Color.BLUE)
+                    binding.btnSkip.isEnabled = true
 
                 } else {
-                    binding.subbutton.isEnabled = false
-                    binding.subbutton.setBackgroundColor(Color.GRAY)
+                    binding.btnSkip.isEnabled = false
                 }
             }
 
             @SuppressLint("SuspiciousIndentation")
             override fun onNothingSelected(parent: AdapterView<*>) {
-                binding.subbutton.isEnabled = false
-                binding.subbutton.setBackgroundColor(Color.GRAY)
+                binding.btnSkip.isEnabled = false
             }
         }
 
-        binding.subbutton.setOnClickListener() {
-            val intent = Intent(applicationContext, RoutineProcessStepsActivity::class.java)
+        binding.btnSkip.setOnClickListener() {
+            viewModel.skipReason(routineId, routineDate, selectedReason)
+        }
+
+        binding.btnBackToHomePage.setOnClickListener {
+            val intent = Intent(applicationContext, MainActivity::class.java)
             startActivity(intent)
+        }
+
+        viewModel.resultSkipReason.observe(this) {
+            when (it) {
+                is UiState.Loading -> {
+                }
+
+                is UiState.Success -> {
+                    Toast.makeText(applicationContext, "${it.data?.message}", Toast.LENGTH_SHORT).show()
+
+                    if (it.data?.status == true) finish()
+
+                }
+
+                is UiState.Error -> {
+                    Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+                }
+            }
         }
 
         viewModel.result.observe(this) {
@@ -136,18 +177,21 @@ class WorkDetailsActivity : AppCompatActivity() {
                             binding.btnStart.setBackgroundColor(Color.GREEN)
                             binding.btnPause.setBackgroundColor(Color.GRAY)
                             binding.btnStop.setBackgroundColor(Color.GRAY)
+                            binding.btnBackToHomePage.visibility = View.GONE
                         }
 
                         "paused" -> {
                             binding.btnStart.setBackgroundColor(Color.GRAY)
                             binding.btnPause.setBackgroundColor(Color.RED)
                             binding.btnStop.setBackgroundColor(Color.GRAY)
+                            binding.btnBackToHomePage.visibility = View.VISIBLE
                         }
 
                         "stopped" -> {
                             binding.btnStart.setBackgroundColor(Color.GRAY)
                             binding.btnPause.setBackgroundColor(Color.GRAY)
                             binding.btnStop.setBackgroundColor(Color.RED)
+                            binding.btnBackToHomePage.visibility = View.GONE
                         }
 
                         /* "submit" ->{
@@ -187,6 +231,15 @@ class WorkDetailsActivity : AppCompatActivity() {
                                 binding.btnStart.setBackgroundColor(Color.GREEN)
                                 binding.btnPause.setBackgroundColor(Color.GRAY)
                                 binding.btnStop.setBackgroundColor(Color.GRAY)
+
+//                                val startTimeString = it.data.data[0].startTime // "2025-06-16 14:30:00"
+//                                startTimeMillis = parseStartTimeToMillis(startTimeString)
+//                                startTimer(startTimeMillis)
+
+                                val apiStartTime = it.data.data[0].startTime
+                                val startTimeMillis = parseStartTimeToMillis(apiStartTime)
+                                val elapsedNow = System.currentTimeMillis() - startTimeMillis
+                                startTimer(startTimeMillis, elapsedNow)
                             }
 
                             "paused" -> {
@@ -220,13 +273,14 @@ class WorkDetailsActivity : AppCompatActivity() {
 
                     val data = it.data?.data ?: emptyList()
                     list.clear()
+                    list.add("SELECT REASON")
                     for (item in data) {
                         list.add(item.reasonName)
                     }
                     // Create adapter
                     val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, list)
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    binding.edtReson.adapter = adapter
+                    binding.edtReason.adapter = adapter
                 }
 
                 is UiState.Error -> {
@@ -235,4 +289,55 @@ class WorkDetailsActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun parseStartTimeToMillis(timeString: String): Long {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+        formatter.timeZone = TimeZone.getDefault() // or use UTC if the server sends in UTC
+        return formatter.parse(timeString)?.time ?: System.currentTimeMillis()
+    }
+
+
+    private fun stopTimer() {
+        timerJob?.cancel()
+    }
+
+    private fun startTimer(startFromMillis: Long, resumeFromElapsed: Long = 0L) {
+        timerJob?.cancel()
+
+        // Adjust base start time for previously elapsed duration
+        val baseStartTime = startFromMillis - resumeFromElapsed
+
+        timerJob = lifecycleScope.launch {
+            while (isActive) {
+                val elapsedMillis = System.currentTimeMillis() - baseStartTime
+
+                val seconds = (elapsedMillis / 1000) % 60
+                val minutes = (elapsedMillis / (1000 * 60)) % 60
+                val hours = (elapsedMillis / (1000 * 60 * 60))
+
+                val timeFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                binding.txtStartTime.text = timeFormatted
+
+                delay(1000)
+            }
+        }
+    }
+
+
+
+    private fun startTimer(fromTimeMillis: Long) {
+        timerJob?.cancel()
+        timerJob = lifecycleScope.launch {
+            while (isActive) {
+                val elapsedMillis = System.currentTimeMillis() - fromTimeMillis
+                val seconds = (elapsedMillis / 1000) % 60
+                val minutes = (elapsedMillis / (1000 * 60)) % 60
+                val hours = (elapsedMillis / (1000 * 60 * 60))
+                val time = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                binding.txtStartTime.text = time
+                delay(1000)
+            }
+        }
+    }
+
 }

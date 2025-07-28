@@ -25,5 +25,7 @@ data class RoutineWorkItem (
     @SerializedName("tolerance_date")
     val toleranceDate: String,
     @SerializedName("time_required")
-    val timeRequired: String
+    val timeRequired: String,
+    @SerializedName("skip_reason")
+    val reason: String?
 )

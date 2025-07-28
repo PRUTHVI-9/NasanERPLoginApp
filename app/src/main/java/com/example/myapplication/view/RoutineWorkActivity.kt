@@ -29,6 +29,7 @@ class RoutineWorkActivity : AppCompatActivity() {
         binding = ActivityRoutineWorkBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         enableEdgeToEdge()
 //        setContentView(R.layout.activity_routine_work)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -81,6 +82,19 @@ class RoutineWorkActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val empId = intent?.getStringExtra("emp_id") ?: "0"
+
+        if (empId != "0") {
+//            binding.recyclerView.visibility = View.GONE
+//            binding.txtNoRecordFound.visibility = View.GONE
+//            binding.progressBar.visibility = View.VISIBLE
+            viewModel.fetchRoutineWork(empId)
         }
     }
 }

@@ -13,6 +13,14 @@ data class ActionRequest(
     val timeReq: String
 )
 
+data class TaskActionRequest (
+    @SerializedName("task_id")
+    val routineId: String,
+    @SerializedName("status")
+    val status: String,
+    @SerializedName("time_req")
+    val timeReq: String
+)
 data class CommonResponse(
     @SerializedName("status")
     val status: Boolean,
