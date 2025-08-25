@@ -78,22 +78,22 @@ class TaskActivity : AppCompatActivity() {
                     if (status) {
                         when (chipText) {
                             "Assigned To Self" -> {
-                                var data = it.data.data?.assignedToSelfData ?: emptyList()
+                                var data = it.data?.data?.assignedToSelfData ?: emptyList()
                                 setAdapter1(data)
                             }
 
                             "Assigned To Others" -> {
-                                val data = it.data.data?.assignedToOthersData ?: emptyList()
+                                val data = it.data?.data?.assignedToOthersData ?: emptyList()
                                 setAdapter2(data)
                             }
 
                             "Assigned By Others" -> {
-                                val data = it.data.data?.assignedByOthersData ?: emptyList()
+                                val data = it.data?.data?.assignedByOthersData ?: emptyList()
                                 setAdapter3(data)
                             }
 
                             "Task Verification" -> {
-                                val data = it.data.data?.taskVerificationData ?: emptyList()
+                                val data = it.data?.data?.taskVerificationData ?: emptyList()
                                 setAdapter4(data)
                             }
                         }

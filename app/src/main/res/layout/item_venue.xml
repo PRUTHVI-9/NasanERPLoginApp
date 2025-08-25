@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="?attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/VenueName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Abc"
+        android:textSize="16sp"
+        android:textColor="@android:color/black" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="6dp"
+        android:background="#E0D5D5" />
+</LinearLayout>

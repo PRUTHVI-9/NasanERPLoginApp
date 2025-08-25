@@ -21,30 +21,122 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Search or select a meeting"
+            android:completionThreshold="1"
             android:inputType="text"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Select Meeting To Add"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            />
+        <!-- Recyclerview for search meeting-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/meetingRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:layout_marginTop="8dp"
+            android:minHeight="50dp"
+            android:scrollbars="vertical"
+            android:background="@drawable/recycler_border"/>
+
+
+
+        <TextView
+            android:id="@+id/selectedMeeting"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Selected meeting name"
+            android:textSize="16sp"
+            android:layout_marginTop="20dp"
+            android:focusable="false"
+            android:clickable="false"
+            android:background="@drawable/text_border"
+            />
+
 
         <!-- 2. Meeting Frequency -->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="14dp"
+            android:text="Meeting Frequency"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            />
+
         <Spinner
             android:id="@+id/meetingFrequency"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/spinner_border"/>
 
         <!-- 3. Venue (Dropdown) -->
-        <Spinner
-            android:id="@+id/venueSpinner"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginTop="10dp"
+            android:text="Select Venue"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            />
 
-        <!-- 4. Tolerance (in minutes) -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/venueRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/recycler_border"
+            android:scrollbars="vertical" />
+
+        <!--4. Meeting Link  -->
+        <TextView
+            android:id="@+id/tvMeetingLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Meeting Link"
+            android:layout_marginTop="2dp"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:padding="4dp"
+            android:textColor= "@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            />
+
+
+
+        <EditText
+            android:id="@+id/etMeetingLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Paste Zoom / Google Meet link"
+            android:inputType="textUri"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/text_border"
+
+            />
+
+
+        <!-- 5. Tolerance (in minutes) -->
+
         <EditText
             android:id="@+id/tolerance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Tolerance (in minutes)"
             android:inputType="number"
+            android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp" />
 
         <!-- === Conditional Frequency Layouts === -->
@@ -55,7 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_marginBottom="16dp">
 
             <TextView
@@ -109,12 +201,13 @@
                 android:layout_height="wrap_content"
                 android:text="Enter Dates (e.g. 1, 10, 15)" />
 
-<!--            <MultiAutoCompleteTextView-->
-<!--                android:id="@+id/monthlyDatesInput"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:hint="Dates (comma-separated)"-->
-<!--                android:inputType="number" />-->
+            <MultiAutoCompleteTextView
+                android:id="@+id/monthlyDatesInput1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Dates (comma-separated)"
+                android:inputType="number" />
+
             <EditText
                 android:id="@+id/monthlyDatesInput"
                 android:layout_width="match_parent"
@@ -126,11 +219,12 @@
 
         </LinearLayout>
 
+        <!-- 6. Employee Selection-->
         <Button
             android:id="@+id/selectEmployeesButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Select Employees"
+            android:text="Select Employees For Meeting"
             android:layout_marginBottom="16dp" />
 
         <TextView
@@ -142,12 +236,146 @@
             android:layout_marginBottom="16dp" />
 
 
-        <!-- Submit Button -->
-        <Button
-            android:id="@+id/submitButton"
+
+
+        <!-- Meeting Postponed Option -->
+        <LinearLayout
+            android:id="@+id/postponedLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
+            android:background="@drawable/text_border">
 
+
+            <CheckBox
+                android:id="@+id/checkPostponed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark this meeting as postponed"
+                android:textSize="16sp" />
+
+            <!-- Reschedule Date -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:id="@+id/rescheduleLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Date:"
+                    android:layout_gravity="center_vertical"
+                    android:textStyle="bold"/>
+
+                <Button
+                    android:id="@+id/btnRescheduleDate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Date"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+<!--Meeting Agenda Layout-->
+
+        <TextView
+            android:id="@+id/tvMeetingAgenda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Agenda For Meeting"
+            android:layout_marginTop="10dp"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:padding="4dp"
+            android:textColor= "@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            />
+
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- header you already have (kept same) -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="#E4E1E1"
+                android:padding="8dp">
+                <TextView android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:text="Agenda" android:textStyle="bold" android:gravity="center" android:background="@drawable/cell_border"/>
+                <TextView android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:text="Goal" android:textStyle="bold" android:gravity="center" android:background="@drawable/cell_border"/>
+                <TextView android:layout_width="0dp" android:layout_weight="2" android:layout_height="wrap_content" android:text="Actions" android:textStyle="bold" android:gravity="center" android:background="@drawable/cell_border"/>
+            </LinearLayout>
+
+            <!-- progress -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="12dp"/>
+
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No agenda found"
+                android:gravity="center"
+                android:visibility="gone"
+                android:padding="12dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_agenda"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:minHeight="50dp"
+                android:scrollbars="vertical"
+                android:layout_marginTop="8dp"
+                />
+
+        </LinearLayout>
+
+
+
+
+
+        <!-- Submit Button -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:padding="8dp">
+
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Submit"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel"
+                android:layout_marginStart="8dp" />
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

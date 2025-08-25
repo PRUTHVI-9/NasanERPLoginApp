@@ -1,10 +1,13 @@
 package com.example.myapplication.data.network
 
 import com.example.myapplication.data.model.ActionRequest
+import com.example.myapplication.data.model.AgendaRequest
+import com.example.myapplication.data.model.AgendaResponse
 import com.example.myapplication.data.model.CommonResponse
 import com.example.myapplication.data.model.EmployeeResponse
 import com.example.myapplication.data.model.LoginRequest
 import com.example.myapplication.data.model.LoginResponse
+import com.example.myapplication.data.model.MeetingDescResponse
 import com.example.myapplication.data.model.MeetingResponse
 import com.example.myapplication.data.model.ReasonResponse
 import com.example.myapplication.data.model.RoutineProcessRequest
@@ -12,12 +15,14 @@ import com.example.myapplication.data.model.RoutineProcessResponse
 import com.example.myapplication.data.model.RoutineStatusRequest
 import com.example.myapplication.data.model.RoutineStatusResponse
 import com.example.myapplication.data.model.RoutineWorkResponse
+import com.example.myapplication.data.model.SelectEmployeeResponse
 import com.example.myapplication.data.model.SkipReasonRequest
 import com.example.myapplication.data.model.SkipReasonResponse
 import com.example.myapplication.data.model.TaskActionRequest
 import com.example.myapplication.data.model.TaskResponse
 import com.example.myapplication.data.model.TaskStatusRequest
 import com.example.myapplication.data.model.TaskStatusResponse
+import com.example.myapplication.data.model.VenueResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -31,7 +36,7 @@ interface ApiService {
 
     @FormUrlEncoded
     @POST("/api/login.php")
-    suspend fun login1(
+    suspend fun login(
         @Field("user_id") userId: String,
         @Field("password") password: String
     ): Response<LoginResponse>
@@ -111,4 +116,20 @@ interface ApiService {
         @Body request: TaskStatusRequest
     ): Response<TaskStatusResponse>
 
+
+    @GET("api/fetch_MeetingDesc.php")
+    suspend fun fetchMeetingDesc(): Response<MeetingDescResponse>
+
+    @GET("api/fetch_venue.php")
+    suspend fun fetchVenue(): Response<VenueResponse>
+
+    @GET("api/fetch_Employees.php")
+    suspend fun fetchEmployee(): Response<SelectEmployeeResponse>
+
+    @Headers("Content-Type: application/json")
+    @POST("api/fetch_MeetingAgenda.php")
+      suspend fun fetchAgenda(
+        @Body request: AgendaRequest
+      ): Response<AgendaResponse>
 }
+

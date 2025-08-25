@@ -46,6 +46,7 @@ class LoginActivity : AppCompatActivity() {
             val empId = sharedPref.getString("empId", "0") ?: "0"
             val intent = Intent(applicationContext, MainActivity::class.java)
             intent.putExtra("emp_id", empId)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
             finish()
             return

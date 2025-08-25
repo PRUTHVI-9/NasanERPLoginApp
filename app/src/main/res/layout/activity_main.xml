@@ -118,5 +118,13 @@
             android:textSize="20sp"
             android:id="@+id/txtAddMeeting"
             android:gravity="center"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Out For Office Work"
+            android:textSize="20sp"
+            android:id="@+id/txtOutForOfficeWork"
+            android:gravity="center"/>
     </LinearLayout>
 </ScrollView>

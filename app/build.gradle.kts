@@ -40,6 +40,21 @@ android {
     buildFeatures {
         viewBinding  = true
     }
+
+    packaging {
+        resources {
+            pickFirsts += setOf(
+                "META-INF/INDEX.LIST",
+                "META-INF/DEPENDENCIES",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt"
+            )
+        }
+    }
+
+
 }
 
 dependencies {
@@ -49,11 +64,16 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.media3.common.ktx)
+    implementation(libs.firebase.appdistribution.gradle)
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
 
+    implementation ("androidx.core:core-ktx:1.12.0")
     // retrofit
     implementation("com.squareup.retrofit2:retrofit:2.11.0")
 
@@ -65,8 +85,8 @@ dependencies {
     implementation(platform("com.squareup.okhttp3:okhttp-bom:4.12.0"))
 
     // define any required OkHttp artifacts without version
-    implementation("com.squareup.okhttp3:okhttp")
-    implementation("com.squareup.okhttp3:logging-interceptor")
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     val lifecycle_version = "2.8.7"
 
@@ -77,7 +97,8 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
 
     // Coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+//    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
 
     // Workmanager
     val work_version = "2.10.1"
@@ -89,11 +110,26 @@ dependencies {
     implementation("androidx.work:work-runtime-ktx:$work_version")
 
     // hilt
-    implementation("com.google.dagger:hilt-android:2.56.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.56.1")
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
     // glide
-    implementation("com.github.bumptech.glide:glide:4.16.0")
+    implementation(libs.glide)
+
+
+    //added
+
+    implementation("io.grpc:grpc-okhttp:1.65.0")
+
+    implementation ("net.sourceforge.jtds:jtds:1.3.1")
+
+
+    // If grpc-netty got pulled in by mistake, exclude it
+    configurations.all {
+        exclude(group = "io.grpc", module = "grpc-netty")
+        exclude(group = "io.netty")
+    }
+
 
 
 }

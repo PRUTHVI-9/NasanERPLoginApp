@@ -16,6 +16,8 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity android:name=".view.OutForOfficeWorkActivity"
+            android:exported="false"/>
         <activity
             android:name=".view.AddMeetingActivity"
             android:exported="false" />

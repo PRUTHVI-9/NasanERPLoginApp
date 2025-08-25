@@ -105,15 +105,26 @@ class MainActivity : AppCompatActivity() {
 
         binding.txtAddMeeting.setOnClickListener {
             val intent = Intent(applicationContext, AddMeetingActivity::class.java)
+            intent.putExtra("emp_id", userId)
+            println("userid$userId")
             startActivity(intent)
         }
+
+
+        binding.txtOutForOfficeWork.setOnClickListener {
+            val intent = Intent(applicationContext, OutForOfficeWorkActivity::class.java)
+            intent.putExtra("emp_id", userId)
+            println("userid$userId")
+            startActivity(intent)
+        }
+
         binding.logout.setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("Logout")
                 .setMessage("Do you want to logout?")
                 .setPositiveButton("Yes") { dialog, _ ->
                     val sharedPref = applicationContext.getSharedPreferences("MyAppPrefs", MODE_PRIVATE)
-                    sharedPref.edit() { clear() }
+                    sharedPref.edit() {clear()}
 
                     val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.model.EmployeeResponse
+import com.example.myapplication.data.model.MeetingDescResponse
 import com.example.myapplication.data.repository.MainRepository
 import com.example.myapplication.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,4 +57,21 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
     fun updateState(newState: String) {
         _uiState.value = newState
     }
+
+    private val _meetingResult = MutableLiveData<UiState<MeetingDescResponse>>()
+    val meetingResult: MutableLiveData<UiState<MeetingDescResponse>> = _meetingResult
+
+    /*fun fetchMeetingDesc(userId: String) {
+        viewModelScope.launch {
+            _meetingResult.value = UiState.Loading
+            val result = repository.fetchMeetingDesc(userId)
+            _meetingResult.value = result
+        }
+    }*/
+
 }
+
+
+
+
+
